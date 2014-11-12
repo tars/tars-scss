@@ -9,7 +9,7 @@ var modifyDate = require('../helpers/modifyDateFormatter');
 var browserSync = require('browser-sync');
 
 /**
- * Make sprite and scss for this sprite
+ * Make sprite for svg-fallback and scss for this sprite
  * Return pipe with scss for sprite
  * @param  {object} buildOptions
  */
@@ -17,7 +17,7 @@ module.exports = function(buildOptions) {
 
     return gulp.task('make-fallback-for-svg', function(cb) {
 
-        if (projectConfig.useSVG && projectConfig.useIE8Stylies) {
+        if (projectConfig.useSVG && gutil.env.ie8) {
             var spriteData = '';
 
             spriteData = gulp.src('./dev/' + projectConfig.fs.staticFolderName + '/' + projectConfig.fs.imagesFolderName + '/rasterSvgImages/*.png')
