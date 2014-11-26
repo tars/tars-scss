@@ -240,6 +240,16 @@ textarea {
   margin: 0; /* 3 */
 }
 
+fieldset {
+  margin: 0;
+  padding: 0;
+  border: 0;
+  outline: 0;
+  font-size: 100%;
+  vertical-align: baseline;
+  background: transparent;
+}
+
 /**
  * Address `overflow` set to `hidden` in IE 8/9/10/11.
  */

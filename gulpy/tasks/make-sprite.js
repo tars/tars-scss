@@ -2,9 +2,9 @@ var gulp = require('gulp');
 var spritesmith = require('gulp.spritesmith');
 var gulpif = require('gulp-if');
 var notify = require('gulp-notify');
-var projectConfig = require('../../projectConfig');
+var projectConfig = require('../../../projectConfig');
 var notifyConfig = projectConfig.notifyConfig;
-var modifyDate = require('../helpers/modifyDateFormatter');
+var modifyDate = require('../../helpers/modifyDateFormatter');
 var browserSync = require('browser-sync');
 
 var dpi = projectConfig.useImagesForDisplayWithDpi;

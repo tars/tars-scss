@@ -5,9 +5,9 @@ var gulpif = require('gulp-if');
 var gutil = require('gulp-util');
 var autoprefix = require('gulp-autoprefixer');
 var notify = require('gulp-notify');
-var projectConfig = require('../../projectConfig');
+var projectConfig = require('../../../projectConfig');
 var notifyConfig = projectConfig.notifyConfig;
-var modifyDate = require('../helpers/modifyDateFormatter');
+var modifyDate = require('../../helpers/modifyDateFormatter');
 var browserSync = require('browser-sync');
 
 var scssFilesToConcatinate = [
