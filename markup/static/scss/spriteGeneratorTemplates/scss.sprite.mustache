@@ -45,30 +45,30 @@
 
   @mixin bg($sprite, $repeat: no-repeat) {
     @include sprite-mixin-template($sprite);
-    $sprite-total-width: nth($sprite, 7); 
+    $sprite-total-width: nth($sprite, 7);
     $sprite-total-height: nth($sprite, 8);
     background-size: $sprite-total-width, $sprite-total-height;
     background-repeat: $repeat;
-    
-    {{#options.dpi144}}
-      @media screen and (-webkit-min-device-pixel-ratio: 1.5), only screen and ( min-resolution: 144dpi), only screen and ( min-resolution: 1.5dppx) {
-          $sprite-image: nth($sprite, 9);
-          background-image: url(../img/pngSprite/144dpi/#{$sprite-image});
-      }
-    {{/options.dpi144}}  
-    
+
     {{#options.dpi192}}
       @media screen and (-webkit-min-device-pixel-ratio: 2), only screen and ( min-resolution: 192dpi), only screen and ( min-resolution: 2dppx) {
           $sprite-image: nth($sprite, 9);
           background-image: url(../img/pngSprite/192dpi/#{$sprite-image});
       }
-    {{/options.dpi192}}  
+    {{/options.dpi192}}
 
     {{#options.dpi288}}
       @media screen and (-webkit-min-device-pixel-ratio: 3), only screen and ( min-resolution: 288dpi), only screen and ( min-resolution: 3dppx) {
           $sprite-image: nth($sprite, 9);
           background-image: url(../img/pngSprite/288dpi/#{$sprite-image});
       }
-    {{/options.dpi288}}  
+    {{/options.dpi288}}
+
+    {{#options.dpi384}}
+      @media screen and (-webkit-min-device-pixel-ratio: 4), only screen and ( min-resolution: 384dpi), only screen and ( min-resolution: 4dppx) {
+          $sprite-image: nth($sprite, 9);
+          background-image: url(../img/pngSprite/384dpi/#{$sprite-image});
+      }
+    {{/options.dpi384}}
   }
 {{/options.functions}}

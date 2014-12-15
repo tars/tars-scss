@@ -4,6 +4,7 @@ var sass = require('gulp-sass');
 var gulpif = require('gulp-if');
 var gutil = require('gulp-util');
 var autoprefix = require('gulp-autoprefixer');
+var replace = require('gulp-replace-task');
 var notify = require('gulp-notify');
 var projectConfig = require('../../../projectConfig');
 var notifyConfig = projectConfig.notifyConfig;
@@ -40,10 +41,23 @@ var scssFilesToConcatinate = [
  */
 module.exports = function(buildOptions) {
 
+    var patterns = [];
+
+    patterns.push(
+        {
+            match: '%=staticPrefix=%',
+            replacement: projectConfig.staticPrefix
+        }
+    );
+
     return gulp.task('compile-css-for-ie9', function(cb) {
         if (gutil.env.ie9) {
             return gulp.src(scssFilesToConcatinate)
                 .pipe(concat('main_ie9' + buildOptions.hash + '.css'))
+                .pipe(replace({
+                    patterns: patterns,
+                    usePrefix: false
+                }))
                 .pipe(sass({
                     errLogToConsole: false,
                     onError: function(error) {
