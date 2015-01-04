@@ -3,7 +3,7 @@ var concat = require('gulp-concat');
 var sass = require('gulp-sass');
 var gulpif = require('gulp-if');
 var gutil = require('gulp-util');
-var autoprefix = require('gulp-autoprefixer');
+var autoprefixer = require('gulp-autoprefixer');
 var replace = require('gulp-replace-task');
 var notify = require('gulp-notify');
 var tarsConfig = require('../../../tars-config');
@@ -15,12 +15,12 @@ var scssFilesToConcatinate = [
         './markup/' + tarsConfig.fs.staticFolderName + '/scss/normalize.scss',
         './markup/' + tarsConfig.fs.staticFolderName + '/scss/mixins.scss',
         './markup/' + tarsConfig.fs.staticFolderName + '/scss/spritesScss/sprite96.scss'
-    ],
+    ];
 
-var autoprefixerConfig = '';
+var useAutoprefixer = false;
 
 if (tarsConfig.autoprefixerConfig) {
-    autoprefixerConfig = tarsConfig.autoprefixerConfig.join(',');
+    useAutoprefixer = true;
 }
 
 if (tarsConfig.useSVG) {
@@ -70,8 +70,13 @@ module.exports = function(buildOptions) {
                     }
                 }))
             .pipe(
-                gulpif(autoprefixerConfig,
-                    autoprefix(autoprefixerConfig, { cascade: true })
+                gulpif(useAutoprefixer,
+                    autoprefixer(
+                        {
+                            browsers: tarsConfig.autoprefixerConfig,
+                            cascade: true
+                        }
+                    )
                 )
             )
             .on('error', notify.onError(function (error) {
