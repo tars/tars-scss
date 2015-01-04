@@ -6,34 +6,34 @@ var gutil = require('gulp-util');
 var autoprefix = require('gulp-autoprefixer');
 var replace = require('gulp-replace-task');
 var notify = require('gulp-notify');
-var projectConfig = require('../../../tars-config');
-var notifyConfig = projectConfig.notifyConfig;
+var tarsConfig = require('../../../tars-config');
+var notifyConfig = tarsConfig.notifyConfig;
 var modifyDate = require('../../helpers/modifyDateFormatter');
 var browserSync = require('browser-sync');
 
 var scssFilesToConcatinate = [
-        './markup/' + projectConfig.fs.staticFolderName + '/scss/normalize.scss',
-        './markup/' + projectConfig.fs.staticFolderName + '/scss/mixins.scss',
-        './markup/' + projectConfig.fs.staticFolderName + '/scss/spritesScss/sprite96.scss'
+        './markup/' + tarsConfig.fs.staticFolderName + '/scss/normalize.scss',
+        './markup/' + tarsConfig.fs.staticFolderName + '/scss/mixins.scss',
+        './markup/' + tarsConfig.fs.staticFolderName + '/scss/spritesScss/sprite96.scss'
     ];
 
-    if (projectConfig.useSVG) {
+    if (tarsConfig.useSVG) {
         scssFilesToConcatinate.push(
-            './markup/' + projectConfig.fs.staticFolderName + '/scss/spritesScss/svg-fallback-sprite.scss',
-            './markup/' + projectConfig.fs.staticFolderName + '/scss/spritesScss/svg-sprite-ie.scss'
+            './markup/' + tarsConfig.fs.staticFolderName + '/scss/spritesScss/svg-fallback-sprite.scss',
+            './markup/' + tarsConfig.fs.staticFolderName + '/scss/spritesScss/svg-sprite-ie.scss'
         );
     }
 
     scssFilesToConcatinate.push(
-        './markup/' + projectConfig.fs.staticFolderName + '/scss/spritesScss/sprite-ie.scss',
-        './markup/' + projectConfig.fs.staticFolderName + '/scss/fonts.scss',
-        './markup/' + projectConfig.fs.staticFolderName + '/scss/vars.scss',
-        './markup/' + projectConfig.fs.staticFolderName + '/scss/GUI.scss',
-        './markup/' + projectConfig.fs.staticFolderName + '/scss/common.scss',
-        './markup/' + projectConfig.fs.staticFolderName + '/scss/plugins/**/*.scss',
+        './markup/' + tarsConfig.fs.staticFolderName + '/scss/spritesScss/sprite-ie.scss',
+        './markup/' + tarsConfig.fs.staticFolderName + '/scss/fonts.scss',
+        './markup/' + tarsConfig.fs.staticFolderName + '/scss/vars.scss',
+        './markup/' + tarsConfig.fs.staticFolderName + '/scss/GUI.scss',
+        './markup/' + tarsConfig.fs.staticFolderName + '/scss/common.scss',
+        './markup/' + tarsConfig.fs.staticFolderName + '/scss/plugins/**/*.scss',
         './markup/modules/*/*.scss',
         './markup/modules/*/ie/ie8.scss',
-        './markup/' + projectConfig.fs.staticFolderName + '/scss/etc/**/*.scss'
+        './markup/' + tarsConfig.fs.staticFolderName + '/scss/etc/**/*.scss'
     );
 
 /**
@@ -47,7 +47,7 @@ module.exports = function(buildOptions) {
     patterns.push(
         {
             match: '%=staticPrefix=%',
-            replacement: projectConfig.staticPrefix
+            replacement: tarsConfig.staticPrefix
         }
     );
 
@@ -70,7 +70,7 @@ module.exports = function(buildOptions) {
                 .on('error', notify.onError(function (error) {
                     return '\nAn error occurred while autoprefixing css.\nLook in the console for details.\n' + error;
                 }))
-                .pipe(gulp.dest('./dev/' + projectConfig.fs.staticFolderName + '/css/'))
+                .pipe(gulp.dest('./dev/' + tarsConfig.fs.staticFolderName + '/css/'))
                 .pipe(browserSync.reload({stream:true}))
                 .pipe(
                     gulpif(notifyConfig.useNotify,
