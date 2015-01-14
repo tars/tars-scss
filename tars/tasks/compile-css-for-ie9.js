@@ -13,6 +13,7 @@ var browserSync = require('browser-sync');
 
 var scssFilesToConcatinate = [
         './markup/' + tarsConfig.fs.staticFolderName + '/scss/normalize.scss',
+        './markup/' + tarsConfig.fs.staticFolderName + '/scss/libraries/**/*.scss',
         './markup/' + tarsConfig.fs.staticFolderName + '/scss/mixins.scss',
         './markup/' + tarsConfig.fs.staticFolderName + '/scss/spritesScss/sprite96.scss'
     ];
