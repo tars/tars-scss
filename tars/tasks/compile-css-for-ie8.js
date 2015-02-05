@@ -8,7 +8,7 @@ var replace = require('gulp-replace-task');
 var notify = require('gulp-notify');
 var tarsConfig = require('../../../tars-config');
 var notifyConfig = tarsConfig.notifyConfig;
-var modifyDate = require('../../helpers/modifyDateFormatter');
+var modifyDate = require('../../helpers/modify-date-formatter');
 var browserSync = require('browser-sync');
 
 var scssFilesToConcatinate = [
@@ -64,7 +64,7 @@ module.exports = function(buildOptions) {
                     errLogToConsole: false,
                     onError: function(error) {
                         notify().write('\nAn error occurred while compiling css for ie8.\nLook in the console for details.\n');
-                        return gutil.log(gutil.colors.red(error));
+                        return gutil.log(gutil.colors.red(error.message + ' on line ' + error.line + ' in ' + error.file));
                     }
                 }))
                 .pipe(autoprefix('ie 8', { cascade: true }))
