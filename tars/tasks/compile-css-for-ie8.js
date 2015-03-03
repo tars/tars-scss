@@ -52,7 +52,7 @@ module.exports = function(buildOptions) {
         }
     );
 
-    return gulp.task('compile-css-for-ie8', function(cb) {
+    return gulp.task('css:compile-css-for-ie8', function(cb) {
         if (gutil.env.ie8) {
             return gulp.src(scssFilesToConcatinate)
                 .pipe(concat('main_ie8' + buildOptions.hash + '.css'))

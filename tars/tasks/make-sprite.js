@@ -13,7 +13,7 @@ var dpi = tarsConfig.useImagesForDisplayWithDpi;
  */
 module.exports = function(buildOptions) {
 
-    return gulp.task('make-sprite', function() {
+    return gulp.task('css:make-sprite', function() {
 
         var spriteData = [],
             dpiLength = dpi.length,

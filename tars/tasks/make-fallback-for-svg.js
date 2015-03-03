@@ -13,7 +13,7 @@ var browserSync = require('browser-sync');
  */
 module.exports = function(buildOptions) {
 
-    return gulp.task('make-fallback-for-svg', function(cb) {
+    return gulp.task('css:make-fallback-for-svg', function(cb) {
         var spriteData = '';
 
         if (tarsConfig.useSVG && gutil.env.ie8) {

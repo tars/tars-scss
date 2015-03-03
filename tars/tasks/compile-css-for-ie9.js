@@ -51,7 +51,7 @@ module.exports = function(buildOptions) {
         }
     );
 
-    return gulp.task('compile-css-for-ie9', function(cb) {
+    return gulp.task('css:compile-css-for-ie9', function(cb) {
         if (gutil.env.ie9) {
             return gulp.src(scssFilesToConcatinate)
                 .pipe(concat('main_ie9' + buildOptions.hash + '.css'))
