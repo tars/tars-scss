@@ -1,11 +1,9 @@
 var gulp = require('gulp');
 var spritesmith = require('gulp.spritesmith');
-var gulpif = require('gulp-if');
 var notify = require('gulp-notify');
 var gutil = require('gulp-util');
 var tarsConfig = require('../../../tars-config');
-var notifyConfig = tarsConfig.notifyConfig;
-var modifyDate = require('../../helpers/modify-date-formatter');
+var notifier = require('../../helpers/notifier');
 var browserSync = require('browser-sync');
 
 /**
@@ -40,33 +38,13 @@ module.exports = function(buildOptions) {
 
             spriteData.img.pipe(gulp.dest('./dev/' + tarsConfig.fs.staticFolderName + '/' + tarsConfig.fs.imagesFolderName + '/rasterSvgSprite/'))
                 .pipe(
-                    gulpif(notifyConfig.useNotify,
-                        notify({
-                            onLast: true,
-                            sound: notifyConfig.sounds.onSuccess,
-                            title: notifyConfig.title,
-                            message: 'Sprite img for svg is ready. \n'+ notifyConfig.taskFinishedText +'<%= options.date %>',
-                            templateOptions: {
-                                date: modifyDate.getTimeOfModify()
-                            }
-                        })
-                    )
+                    notifier('Sprite img for svg is ready')
                 );
 
             return spriteData.css.pipe(gulp.dest('./markup/' + tarsConfig.fs.staticFolderName + '/scss/spritesScss/'))
                     .pipe(browserSync.reload({stream:true}))
                     .pipe(
-                        gulpif(notifyConfig.useNotify,
-                            notify({
-                                onLast: true,
-                                sound: notifyConfig.sounds.onSuccess,
-                                title: notifyConfig.title,
-                                message: 'Scss for svg-sprite is ready. \n'+ notifyConfig.taskFinishedText +'<%= options.date %>',
-                                templateOptions: {
-                                    date: modifyDate.getTimeOfModify()
-                                }
-                            })
-                        )
+                        notifier('Scss for svg-sprite is ready')
                     );
         } else if (tarsConfig.useSVG) {
 
@@ -91,17 +69,7 @@ module.exports = function(buildOptions) {
             return spriteData.css.pipe(gulp.dest('./markup/' + tarsConfig.fs.staticFolderName + '/scss/spritesScss/'))
                     .pipe(browserSync.reload({stream:true}))
                     .pipe(
-                        gulpif(notifyConfig.useNotify,
-                            notify({
-                                onLast: true,
-                                sound: notifyConfig.sounds.onSuccess,
-                                title: notifyConfig.title,
-                                message: 'Scss for svg-sprite is ready. \n'+ notifyConfig.taskFinishedText +'<%= options.date %>',
-                                templateOptions: {
-                                    date: modifyDate.getTimeOfModify()
-                                }
-                            })
-                        )
+                        notifier('Scss for svg-sprite is ready')
                     );
 
         } else {

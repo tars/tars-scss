@@ -1,14 +1,12 @@
 var gulp = require('gulp');
 var concat = require('gulp-concat');
 var sass = require('gulp-sass');
-var gulpif = require('gulp-if');
 var gutil = require('gulp-util');
 var autoprefix = require('gulp-autoprefixer');
 var replace = require('gulp-replace-task');
 var notify = require('gulp-notify');
 var tarsConfig = require('../../../tars-config');
-var notifyConfig = tarsConfig.notifyConfig;
-var modifyDate = require('../../helpers/modify-date-formatter');
+var notifier = require('../../helpers/notifier');
 var browserSync = require('browser-sync');
 
 var scssFilesToConcatinate = [
@@ -76,17 +74,7 @@ module.exports = function(buildOptions) {
                 .pipe(gulp.dest('./dev/' + tarsConfig.fs.staticFolderName + '/css/'))
                 .pipe(browserSync.reload({stream:true}))
                 .pipe(
-                    gulpif(notifyConfig.useNotify,
-                        notify({
-                            onLast: true,
-                            sound: notifyConfig.sounds.onSuccess,
-                            title: notifyConfig.title,
-                            message: 'Css-files for ie8 have been compiled. \n'+ notifyConfig.taskFinishedText +'<%= options.date %>',
-                            templateOptions: {
-                                date: modifyDate.getTimeOfModify()
-                            }
-                        })
-                    )
+                    notifier('Css-files for ie8 have been compiled')
                 );
         } else {
             gutil.log('!Stylies for ie8 are not used!');
