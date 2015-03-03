@@ -78,7 +78,6 @@ module.exports = function(buildOptions) {
                             cascade: true
                         }
                     )
-                )
             )
             .on('error', notify.onError(function (error) {
                 return '\nAn error occurred while autoprefixing css.\nLook in the console for details.\n' + error;
