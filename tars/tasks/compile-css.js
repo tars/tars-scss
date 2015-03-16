@@ -11,14 +11,6 @@ var tarsConfig = require('../../../tars-config');
 var notifier = require('../../helpers/notifier');
 var browserSync = require('browser-sync');
 
-var scssFilesToConcatinate = [
-        './markup/' + tarsConfig.fs.staticFolderName + '/scss/normalize.scss',
-        './markup/' + tarsConfig.fs.staticFolderName + '/scss/libraries/**/*.scss',
-        './markup/' + tarsConfig.fs.staticFolderName + '/scss/libraries/**/*.css',
-        './markup/' + tarsConfig.fs.staticFolderName + '/scss/mixins.scss',
-        './markup/' + tarsConfig.fs.staticFolderName + '/scss/spritesScss/sprite96.scss'
-    ];
-
 var useAutoprefixer = false;
 var helperStream;
 var mainStream;
@@ -28,10 +20,17 @@ if (tarsConfig.autoprefixerConfig) {
     useAutoprefixer = true;
 }
 
+var scssFilesToConcatinate = [
+        './markup/' + tarsConfig.fs.staticFolderName + '/scss/normalize.scss',
+        './markup/' + tarsConfig.fs.staticFolderName + '/scss/libraries/**/*.scss',
+        './markup/' + tarsConfig.fs.staticFolderName + '/scss/libraries/**/*.css',
+        './markup/' + tarsConfig.fs.staticFolderName + '/scss/mixins.scss',
+        './markup/' + tarsConfig.fs.staticFolderName + '/scss/sprites-scss/sprite_96.scss'
+    ];
+
 if (tarsConfig.useSVG) {
     scssFilesToConcatinate.push(
-        './markup/' + tarsConfig.fs.staticFolderName + '/scss/spritesScss/svg-fallback-sprite.scss',
-        './markup/' + tarsConfig.fs.staticFolderName + '/scss/spritesScss/svg-sprite.scss'
+        './markup/' + tarsConfig.fs.staticFolderName + '/scss/sprites-scss/svg-sprite.scss'
     );
 }
 
@@ -55,8 +54,8 @@ module.exports = function(buildOptions) {
 
     patterns.push(
         {
-            match: '%=staticPrefix=%',
-            replacement: tarsConfig.staticPrefix
+            match: '%=staticPrefixForCss=%',
+            replacement: tarsConfig.staticPrefixForCss()
         }
     );
 

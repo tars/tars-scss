@@ -37,7 +37,7 @@ module.exports = function(buildOptions) {
                     spritesmith(
                         {
                             imgName: 'sprite.png',
-                            cssName: 'sprite' + dpi[i] + '.scss',
+                            cssName: 'sprite_' + dpi[i] + '.scss',
                             Algorithms: 'diagonal',
                             engineOpts: {
                                 imagemagick: true
@@ -47,7 +47,7 @@ module.exports = function(buildOptions) {
                                 dpi288: dpi288,
                                 dpi384: dpi384
                             },
-                            cssTemplate: './markup/' + tarsConfig.fs.staticFolderName + '/scss/spriteGeneratorTemplates/scss.sprite.mustache'
+                            cssTemplate: './markup/' + tarsConfig.fs.staticFolderName + '/scss/sprite-generator-templates/scss.sprite.mustache'
                         }
                     )
                 )
@@ -56,13 +56,13 @@ module.exports = function(buildOptions) {
                 }))
             );
 
-            spriteData[i].img.pipe(gulp.dest('./dev/' + tarsConfig.fs.staticFolderName + '/' + tarsConfig.fs.imagesFolderName + '/pngSprite/' + dpi[i] + 'dpi/'))
+            spriteData[i].img.pipe(gulp.dest('./dev/' + tarsConfig.fs.staticFolderName + '/' + tarsConfig.fs.imagesFolderName + '/png-sprite/' + dpi[i] + 'dpi/'))
                 .pipe(
                     notifier('Sprite img with dpi = ' + dpi[i] + ' is ready')
                 );
         }
 
-        return spriteData[0].css.pipe(gulp.dest('./markup/' + tarsConfig.fs.staticFolderName + '/scss/spritesScss/'))
+        return spriteData[0].css.pipe(gulp.dest('./markup/' + tarsConfig.fs.staticFolderName + '/scss/sprites-scss/'))
                 .pipe(browserSync.reload({stream:true}))
                 .pipe(
                     notifier('Scss for sprites is ready')

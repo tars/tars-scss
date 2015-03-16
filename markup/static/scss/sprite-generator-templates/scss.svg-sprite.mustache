@@ -1,0 +1,33 @@
+{{#sprites}}
+  ${{fileName}}-offset-x: {{x}}{{units}};
+  ${{fileName}}-offset-y: {{y}}{{units}};
+  ${{fileName}}-width: {{w}}{{units}};
+  ${{fileName}}-height: {{h}}{{units}};
+  ${{fileName}}-total-width: {{width}}{{units}};
+  ${{fileName}}-total-height: {{height}}{{units}};
+  ${{fileName}}-image: '{{{cssPathSvg}}}';
+  ${{fileName}}: {{x}}{{units}} {{y}}{{units}} {{w}}{{units}} {{h}}{{units}} {{width}}{{units}} {{height}}{{units}} '{{{cssPathSvg}}}' '{{{fileName}}}';
+{{/sprites}}
+
+@mixin svg-sprite-width($svg-sprite) {
+  width: nth($svg-sprite, 3);
+}
+
+@mixin svg-sprite-height($svg-sprite) {
+  height: nth($svg-sprite, 4);
+}
+
+@mixin svg-sprite-position($svg-sprite) {
+  $svg-sprite-offset-x: nth($svg-sprite, 1);
+  $svg-sprite-offset-y: nth($svg-sprite, 2);
+  background-position: $svg-sprite-offset-x  $svg-sprite-offset-y;
+}
+
+@mixin bg-svg($svg-sprite, $repeat: no-repeat) {
+    background-image: url(%=staticPrefixForCss=%svg-sprite/sprite.svg);
+    @include svg-sprite-position($svg-sprite);
+    @include svg-sprite-width($svg-sprite);
+    @include svg-sprite-height($svg-sprite);
+
+    background-repeat: $repeat;
+}

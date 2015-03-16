@@ -14,18 +14,17 @@ var scssFilesToConcatinate = [
         './markup/' + tarsConfig.fs.staticFolderName + '/scss/libraries/**/*.scss',
         './markup/' + tarsConfig.fs.staticFolderName + '/scss/libraries/**/*.css',
         './markup/' + tarsConfig.fs.staticFolderName + '/scss/mixins.scss',
-        './markup/' + tarsConfig.fs.staticFolderName + '/scss/spritesScss/sprite96.scss'
+        './markup/' + tarsConfig.fs.staticFolderName + '/scss/sprites-scss/sprite_96.scss'
     ];
 
     if (tarsConfig.useSVG) {
         scssFilesToConcatinate.push(
-            './markup/' + tarsConfig.fs.staticFolderName + '/scss/spritesScss/svg-fallback-sprite.scss',
-            './markup/' + tarsConfig.fs.staticFolderName + '/scss/spritesScss/svg-sprite-ie.scss'
+            './markup/' + tarsConfig.fs.staticFolderName + '/scss/sprites-scss/svg-fallback-sprite.scss'
         );
     }
 
     scssFilesToConcatinate.push(
-        './markup/' + tarsConfig.fs.staticFolderName + '/scss/spritesScss/sprite-ie.scss',
+        './markup/' + tarsConfig.fs.staticFolderName + '/scss/sprites-scss/sprite-ie.scss',
         './markup/' + tarsConfig.fs.staticFolderName + '/scss/fonts.scss',
         './markup/' + tarsConfig.fs.staticFolderName + '/scss/vars.scss',
         './markup/' + tarsConfig.fs.staticFolderName + '/scss/GUI.scss',
@@ -47,8 +46,8 @@ module.exports = function(buildOptions) {
 
     patterns.push(
         {
-            match: '%=staticPrefix=%',
-            replacement: tarsConfig.staticPrefix
+            match: '%=staticPrefixForCss=%',
+            replacement: tarsConfig.staticPrefixForCss()
         }
     );
 

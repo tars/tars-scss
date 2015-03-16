@@ -33,6 +33,15 @@
 
   @mixin svg-sprite-image($svg-sprite) {
     $svg-sprite-image: nth($svg-sprite, 9);
-    background-image: url(../img/rasterSvgSprite/#{$svg-sprite-image});
+    background-image: url(%=staticPrefixForCss=%rastered-svg-sprite/#{$svg-sprite-image});
+  }
+
+  @mixin bg-svg($svg-sprite, $repeat: no-repeat) {
+    @include svg-sprite-image($svg-sprite);
+    @include svg-sprite-position($svg-sprite);
+    @include svg-sprite-width($svg-sprite);
+    @include svg-sprite-height($svg-sprite);
+
+    background-repeat: $repeat;
   }
 {{/options.functions}}
