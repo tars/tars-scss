@@ -39,9 +39,6 @@ module.exports = function(buildOptions) {
                             imgName: 'sprite.png',
                             cssName: 'sprite_' + dpi[i] + '.scss',
                             Algorithms: 'diagonal',
-                            engineOpts: {
-                                imagemagick: true
-                            },
                             cssOpts: {
                                 dpi192: dpi192,
                                 dpi288: dpi288,

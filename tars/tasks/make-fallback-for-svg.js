@@ -25,9 +25,6 @@ module.exports = function(buildOptions) {
                             imgName: 'svg-fallback-sprite.png',
                             cssName: 'svg-fallback-sprite.scss',
                             Algorithms: 'diagonal',
-                            engineOpts: {
-                                imagemagick: true
-                            },
                             cssTemplate: './markup/' + tarsConfig.fs.staticFolderName + '/scss/sprite-generator-templates/scss.svg-fallback-sprite.mustache'
                         }
                     )
