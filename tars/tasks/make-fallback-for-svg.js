@@ -4,7 +4,6 @@ var notify = require('gulp-notify');
 var gutil = require('gulp-util');
 var tarsConfig = require('../../../tars-config');
 var notifier = require('../../helpers/notifier');
-var browserSync = require('browser-sync');
 
 /**
  * Make sprite for svg-fallback and scss for this sprite
@@ -39,7 +38,6 @@ module.exports = function(buildOptions) {
                 );
 
             return spriteData.css.pipe(gulp.dest('./markup/' + tarsConfig.fs.staticFolderName + '/scss/sprites-scss/'))
-                    .pipe(browserSync.reload({stream:true}))
                     .pipe(
                         notifier('Scss for svg-sprite is ready')
                     );

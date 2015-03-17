@@ -3,7 +3,6 @@ var spritesmith = require('gulp.spritesmith');
 var notify = require('gulp-notify');
 var tarsConfig = require('../../../tars-config');
 var notifier = require('../../helpers/notifier');
-var browserSync = require('browser-sync');
 
 var dpi = tarsConfig.useImagesForDisplayWithDpi;
 
@@ -32,7 +31,7 @@ module.exports = function(buildOptions) {
         }
 
         for (var i = 0; i < dpiLength; i++) {
-            spriteData.push(gulp.src('./markup/' + tarsConfig.fs.staticFolderName + '/' + tarsConfig.fs.imagesFolderName + '/sprite/' + dpi[i] + 'dpi/*.png')
+            spriteData.push(gulp.src('./dev/' + tarsConfig.fs.staticFolderName + '/' + tarsConfig.fs.imagesFolderName + '/sprite/' + dpi[i] + 'dpi/*.png')
                 .pipe(
                     spritesmith(
                         {
@@ -60,7 +59,6 @@ module.exports = function(buildOptions) {
         }
 
         return spriteData[0].css.pipe(gulp.dest('./markup/' + tarsConfig.fs.staticFolderName + '/scss/sprites-scss/'))
-                .pipe(browserSync.reload({stream:true}))
                 .pipe(
                     notifier('Scss for sprites is ready')
                 );
