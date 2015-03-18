@@ -31,7 +31,7 @@ module.exports = function(buildOptions) {
         }
 
         for (var i = 0; i < dpiLength; i++) {
-            spriteData.push(gulp.src('./dev/' + tarsConfig.fs.staticFolderName + '/' + tarsConfig.fs.imagesFolderName + '/sprite/' + dpi[i] + 'dpi/*.png')
+            spriteData.push(gulp.src('./markup/' + tarsConfig.fs.staticFolderName + '/' + tarsConfig.fs.imagesFolderName + '/sprite/' + dpi[i] + 'dpi/*.png')
                 .pipe(
                     spritesmith(
                         {
