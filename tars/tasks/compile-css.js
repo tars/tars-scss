@@ -48,7 +48,7 @@ scssFilesToConcatinate.push(
  * Scss compilation
  * @param  {object} buildOptions
  */
-module.exports = function(buildOptions) {
+module.exports = function (buildOptions) {
 
     var patterns = [];
 
@@ -59,7 +59,7 @@ module.exports = function(buildOptions) {
         }
     );
 
-    return gulp.task('css:compile-css', function() {
+    return gulp.task('css:compile-css', function () {
 
         helperStream = gulp.src(scssFilesToConcatinate);
         mainStream = helperStream.pipe(addsrc.append('./markup/' + tarsConfig.fs.staticFolderName + '/scss/etc/**/*.scss'));
@@ -78,7 +78,7 @@ module.exports = function(buildOptions) {
             }))
             .pipe(sass({
                     errLogToConsole: false,
-                    onError: function(error) {
+                    onError: function (error) {
                         notify().write('\nAn error occurred while compiling css.\nLook in the console for details.\n');
                         return gutil.log(gutil.colors.red(error.message + ' on line ' + error.line + ' in ' + error.file));
                     }
@@ -97,7 +97,7 @@ module.exports = function(buildOptions) {
                 return '\nAn error occurred while autoprefixing css.\nLook in the console for details.\n' + error;
             }))
             .pipe(gulp.dest('./dev/' + tarsConfig.fs.staticFolderName + '/css/'))
-            .pipe(browserSync.reload({stream:true}))
+            .pipe(browserSync.reload({ stream: true }))
             .pipe(
                 notifier('Scss-files\'ve been compiled')
             );
@@ -110,7 +110,7 @@ module.exports = function(buildOptions) {
             }))
             .pipe(sass({
                 errLogToConsole: false,
-                onError: function(error) {
+                onError: function (error) {
                     notify().write('\nAn error occurred while compiling css for ie9.\nLook in the console for details.\n');
                     return gutil.log(gutil.colors.red(error.message + ' on line ' + error.line + ' in ' + error.file));
                 }
@@ -120,9 +120,9 @@ module.exports = function(buildOptions) {
                 return '\nAn error occurred while autoprefixing css.\nLook in the console for details.\n' + error;
             }))
             .pipe(gulp.dest('./dev/' + tarsConfig.fs.staticFolderName + '/css/'))
-            .pipe(browserSync.reload({stream:true}))
+            .pipe(browserSync.reload({ stream: true }))
             .pipe(
                 notifier('Css-files for ie9 have been compiled')
             );
-        });
+    });
 };

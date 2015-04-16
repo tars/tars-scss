@@ -10,17 +10,18 @@ var dpi = tarsConfig.useImagesForDisplayWithDpi;
  * Make sprite and scss for this sprite
  * @param  {Object} buildOptions
  */
-module.exports = function(buildOptions) {
+module.exports = function (buildOptions) {
 
-    return gulp.task('css:make-sprite', function() {
+    return gulp.task('css:make-sprite', function () {
 
         var spriteData = [],
             dpiLength = dpi.length,
             dpi192 = false,
             dpi288 = false,
-            dpi384 = false;
+            dpi384 = false,
+            i = 0;
 
-        for (var i = 0; i < dpiLength; i++) {
+        for (i = 0; i < dpiLength; i++) {
             if (dpi[i] == 192) {
                 dpi192 = true;
             } else if (dpi[i] === 288) {
@@ -30,7 +31,7 @@ module.exports = function(buildOptions) {
             }
         }
 
-        for (var i = 0; i < dpiLength; i++) {
+        for (i = 0; i < dpiLength; i++) {
             spriteData.push(gulp.src('./markup/' + tarsConfig.fs.staticFolderName + '/' + tarsConfig.fs.imagesFolderName + '/sprite/' + dpi[i] + 'dpi/*.png')
                 .pipe(
                     spritesmith(

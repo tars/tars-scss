@@ -10,9 +10,9 @@ var notifier = require('../../helpers/notifier');
  * Return pipe with scss for sprite
  * @param  {object} buildOptions
  */
-module.exports = function(buildOptions) {
+module.exports = function (buildOptions) {
 
-    return gulp.task('css:make-fallback-for-svg', function(cb) {
+    return gulp.task('css:make-fallback-for-svg', function (cb) {
         var spriteData = '';
 
         if (tarsConfig.useSVG && gutil.env.ie8) {

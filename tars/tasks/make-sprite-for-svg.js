@@ -10,9 +10,9 @@ var svgspritesheet = require('gulp-svg-spritesheet');
  * Return pipe with scss for sprite
  * @param  {object} buildOptions
  */
-module.exports = function(buildOptions) {
+module.exports = function (buildOptions) {
 
-    return gulp.task('css:make-sprite-for-svg', function(cb) {
+    return gulp.task('css:make-sprite-for-svg', function (cb) {
         if (tarsConfig.useSVG) {
             return gulp.src('./dev/' + tarsConfig.fs.staticFolderName + '/' + tarsConfig.fs.imagesFolderName + '/minified-svg/*.svg')
                 .pipe(svgspritesheet({
