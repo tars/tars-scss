@@ -36,6 +36,7 @@ module.exports = function (buildOptions) {
                 .pipe(
                     spritesmith(
                         {
+                            padding: 5,
                             imgName: 'sprite.png',
                             cssName: 'sprite_' + dpi[i] + '.scss',
                             Algorithms: 'diagonal',
