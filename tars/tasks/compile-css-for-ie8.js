@@ -1,60 +1,59 @@
-var gulp = require('gulp');
-var concat = require('gulp-concat');
-var sass = require('gulp-sass');
-var gutil = require('gulp-util');
-var autoprefix = require('gulp-autoprefixer');
-var replace = require('gulp-replace-task');
-var notify = require('gulp-notify');
-var tarsConfig = require('../../../tars-config');
-var notifier = require('../../helpers/notifier');
-var browserSync = require('browser-sync');
+'use strict';
 
+var gulp = tars.packages.gulp;
+var gutil = tars.packages.gutil;
+var concat = tars.packages.concat;
+var sass = tars.packages.sass;
+var autoprefixer = tars.packages.autoprefixer;
+var replace = tars.packages.replace;
+var notify = tars.packages.notify;
+var notifier = tars.helpers.notifier;
+var browserSync = tars.packages.browserSync;
+
+var patterns = [];
+var staticFolderName = tars.config.fs.staticFolderName;
 var scssFilesToConcatinate = [
-        './markup/' + tarsConfig.fs.staticFolderName + '/scss/normalize.scss',
-        './markup/' + tarsConfig.fs.staticFolderName + '/scss/libraries/**/*.scss',
-        './markup/' + tarsConfig.fs.staticFolderName + '/scss/libraries/**/*.css',
-        './markup/' + tarsConfig.fs.staticFolderName + '/scss/mixins.scss',
-        './markup/' + tarsConfig.fs.staticFolderName + '/scss/sprites-scss/sprite_96.scss'
+        './markup/' + staticFolderName + '/scss/normalize.scss',
+        './markup/' + staticFolderName + '/scss/libraries/**/*.scss',
+        './markup/' + staticFolderName + '/scss/libraries/**/*.css',
+        './markup/' + staticFolderName + '/scss/mixins.scss',
+        './markup/' + staticFolderName + '/scss/sprites-scss/sprite_96.scss'
     ];
 
-if (tarsConfig.useSVG) {
+if (tars.config.useSVG) {
     scssFilesToConcatinate.push(
-        './markup/' + tarsConfig.fs.staticFolderName + '/scss/sprites-scss/svg-fallback-sprite.scss'
+        './markup/' + staticFolderName + '/scss/sprites-scss/svg-fallback-sprite.scss'
     );
 }
 
 scssFilesToConcatinate.push(
-    './markup/' + tarsConfig.fs.staticFolderName + '/scss/sprites-scss/sprite-ie.scss',
-    './markup/' + tarsConfig.fs.staticFolderName + '/scss/fonts.scss',
-    './markup/' + tarsConfig.fs.staticFolderName + '/scss/vars.scss',
-    './markup/' + tarsConfig.fs.staticFolderName + '/scss/GUI.scss',
-    './markup/' + tarsConfig.fs.staticFolderName + '/scss/common.scss',
-    './markup/' + tarsConfig.fs.staticFolderName + '/scss/plugins/**/*.scss',
-    './markup/' + tarsConfig.fs.staticFolderName + '/scss/plugins/**/*.css',
+    './markup/' + staticFolderName + '/scss/sprites-scss/sprite-ie.scss',
+    './markup/' + staticFolderName + '/scss/fonts.scss',
+    './markup/' + staticFolderName + '/scss/vars.scss',
+    './markup/' + staticFolderName + '/scss/GUI.scss',
+    './markup/' + staticFolderName + '/scss/common.scss',
+    './markup/' + staticFolderName + '/scss/plugins/**/*.scss',
+    './markup/' + staticFolderName + '/scss/plugins/**/*.css',
     './markup/modules/*/*.scss',
     './markup/modules/*/ie/ie8.scss',
-    './markup/' + tarsConfig.fs.staticFolderName + '/scss/etc/**/*.scss'
+    './markup/' + staticFolderName + '/scss/etc/**/*.scss'
+);
+
+patterns.push(
+    {
+        match: '%=staticPrefixForCss=%',
+        replacement: tars.config.staticPrefixForCss()
+    }
 );
 
 /**
  * Scss compilation for ie8
- * @param  {object} buildOptions
  */
-module.exports = function (buildOptions) {
-
-    var patterns = [];
-
-    patterns.push(
-        {
-            match: '%=staticPrefixForCss=%',
-            replacement: tarsConfig.staticPrefixForCss()
-        }
-    );
-
+module.exports = function () {
     return gulp.task('css:compile-css-for-ie8', function (cb) {
-        if (gutil.env.ie8) {
+        if (tars.flags.ie8) {
             return gulp.src(scssFilesToConcatinate)
-                .pipe(concat('main_ie8' + buildOptions.hash + '.css'))
+                .pipe(concat('main_ie8' + tars.options.build.hash + '.css'))
                 .pipe(replace({
                     patterns: patterns,
                     usePrefix: false
@@ -66,11 +65,11 @@ module.exports = function (buildOptions) {
                         return gutil.log(gutil.colors.red(error.message + ' on line ' + error.line + ' in ' + error.file));
                     }
                 }))
-                .pipe(autoprefix('ie 8', { cascade: true }))
+                .pipe(autoprefixer('ie 8', { cascade: true }))
                 .on('error', notify.onError(function (error) {
                     return '\nAn error occurred while autoprefixing css.\nLook in the console for details.\n' + error;
                 }))
-                .pipe(gulp.dest('./dev/' + tarsConfig.fs.staticFolderName + '/css/'))
+                .pipe(gulp.dest('./dev/' + staticFolderName + '/css/'))
                 .pipe(browserSync.reload({ stream: true }))
                 .pipe(
                     notifier('Css-files for ie8 have been compiled')

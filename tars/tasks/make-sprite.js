@@ -1,25 +1,27 @@
-var gulp = require('gulp');
-var spritesmith = require('gulp.spritesmith');
-var notify = require('gulp-notify');
-var tarsConfig = require('../../../tars-config');
-var notifier = require('../../helpers/notifier');
+'use strict';
 
-var dpi = tarsConfig.useImagesForDisplayWithDpi;
+var gulp = tars.packages.gulp;
+var spritesmith = tars.packages.spritesmith;
+var notify = tars.packages.notify;
+var notifier = tars.helpers.notifier;
+
+var staticFolderName = tars.config.fs.staticFolderName;
+var imagesFolderName = tars.config.fs.imagesFolderName;
+var dpi = tars.config.useImagesForDisplayWithDpi;
 
 /**
  * Make sprite and scss for this sprite
- * @param  {Object} buildOptions
  */
-module.exports = function (buildOptions) {
+module.exports = function () {
 
     return gulp.task('css:make-sprite', function () {
 
-        var spriteData = [],
-            dpiLength = dpi.length,
-            dpi192 = false,
-            dpi288 = false,
-            dpi384 = false,
-            i = 0;
+        var spriteData = [];
+        var dpiLength = dpi.length;
+        var dpi192 = false;
+        var dpi288 = false;
+        var dpi384 = false;
+        var i = 0;
 
         for (i = 0; i < dpiLength; i++) {
             if (dpi[i] == 192) {
@@ -32,7 +34,7 @@ module.exports = function (buildOptions) {
         }
 
         for (i = 0; i < dpiLength; i++) {
-            spriteData.push(gulp.src('./markup/' + tarsConfig.fs.staticFolderName + '/' + tarsConfig.fs.imagesFolderName + '/sprite/' + dpi[i] + 'dpi/*.png')
+            spriteData.push(gulp.src('./markup/' + staticFolderName + '/' + imagesFolderName + '/sprite/' + dpi[i] + 'dpi/*.png')
                 .pipe(
                     spritesmith(
                         {
@@ -44,8 +46,7 @@ module.exports = function (buildOptions) {
                                 dpi288: dpi288,
                                 dpi384: dpi384
                             },
-                            cssTemplate: './markup/' + tarsConfig.fs.staticFolderName + '/scss/sprite-generator-templates/scss.sprite.mustache',
-                            engine: 'phantomjssmith'
+                            cssTemplate: './markup/' + staticFolderName + '/scss/sprite-generator-templates/scss.sprite.mustache'
                         }
                     )
                 )
@@ -54,13 +55,13 @@ module.exports = function (buildOptions) {
                 }))
             );
 
-            spriteData[i].img.pipe(gulp.dest('./dev/' + tarsConfig.fs.staticFolderName + '/' + tarsConfig.fs.imagesFolderName + '/png-sprite/' + dpi[i] + 'dpi/'))
+            spriteData[i].img.pipe(gulp.dest('./dev/' + staticFolderName + '/' + imagesFolderName + '/png-sprite/' + dpi[i] + 'dpi/'))
                 .pipe(
                     notifier('Sprite img with dpi = ' + dpi[i] + ' is ready')
                 );
         }
 
-        return spriteData[0].css.pipe(gulp.dest('./markup/' + tarsConfig.fs.staticFolderName + '/scss/sprites-scss/'))
+        return spriteData[0].css.pipe(gulp.dest('./markup/' + staticFolderName + '/scss/sprites-scss/'))
                 .pipe(
                     notifier('Scss for sprites is ready')
                 );
