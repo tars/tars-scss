@@ -6,18 +6,30 @@ var gulpif = tars.packages.gulpif;
 var concat = tars.packages.concat;
 var sass = tars.packages.sass;
 var autoprefixer = tars.packages.autoprefixer;
+tars.packages.promisePolyfill.polyfill();
+var postcss = tars.packages.postcss;
 var addsrc = tars.packages.addsrc;
 var replace = tars.packages.replace;
 var notify = tars.packages.notify;
 var notifier = tars.helpers.notifier;
 var browserSync = tars.packages.browserSync;
 
-var useAutoprefixer = false;
 var scssFolderPath = './markup/' + tars.config.fs.staticFolderName + '/scss';
 var patterns = [];
+var processors = [];
+var processorsIE9 = [
+    autoprefixer({browsers: ['ie 9']})
+];
 
 if (tars.config.autoprefixerConfig) {
-    useAutoprefixer = true;
+    processors.push(
+        autoprefixer({browsers: tars.config.autoprefixerConfig})
+    );
+}
+
+if (tars.config.postprocessors && tars.config.postprocessors.length) {
+    processors.push(tars.config.postprocessors);
+    processorsIE9.push(tars.config.postprocessors);
 }
 
 var scssFilesToConcatinate = [
@@ -78,18 +90,9 @@ module.exports = function () {
                         return gutil.log(gutil.colors.red(error.message + ' on line ' + error.line + ' in ' + error.file));
                     }
                 }))
-            .pipe(
-                gulpif(useAutoprefixer,
-                    autoprefixer(
-                        {
-                            browsers: tars.config.autoprefixerConfig,
-                            cascade: true
-                        }
-                    )
-                )
-            )
+            .pipe(postcss(processors))
             .on('error', notify.onError(function (error) {
-                return '\nAn error occurred while autoprefixing css.\nLook in the console for details.\n' + error;
+                return '\nAn error occurred while postprocessing css.\nLook in the console for details.\n' + error;
             }))
             .pipe(gulp.dest('./dev/' + tars.config.fs.staticFolderName + '/css/'))
             .pipe(browserSync.reload({ stream: true }))
@@ -110,9 +113,9 @@ module.exports = function () {
                     return gutil.log(gutil.colors.red(error.message + ' on line ' + error.line + ' in ' + error.file));
                 }
             }))
-            .pipe(autoprefixer('ie 9', { cascade: true }))
+            .pipe(postcss(processorsIE9))
             .on('error', notify.onError(function (error) {
-                return '\nAn error occurred while autoprefixing css.\nLook in the console for details.\n' + error;
+                return '\nAn error occurred while postprocessing css.\nLook in the console for details.\n' + error;
             }))
             .pipe(gulp.dest('./dev/' + tars.config.fs.staticFolderName + '/css/'))
             .pipe(browserSync.reload({ stream: true }))

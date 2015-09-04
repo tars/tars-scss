@@ -5,6 +5,8 @@ var gutil = tars.packages.gutil;
 var concat = tars.packages.concat;
 var sass = tars.packages.sass;
 var autoprefixer = tars.packages.autoprefixer;
+tars.packages.promisePolyfill.polyfill();
+var postcss = tars.packages.postcss;
 var replace = tars.packages.replace;
 var notify = tars.packages.notify;
 var notifier = tars.helpers.notifier;
@@ -19,6 +21,13 @@ var scssFilesToConcatinate = [
         scssFolderPath + '/mixins.scss',
         scssFolderPath + '/sprites-scss/sprite_96.scss'
     ];
+var processors = [
+    autoprefixer({browsers: ['ie 8']})
+];
+
+if (tars.config.postprocessors && tars.config.postprocessors.length) {
+    processors.push(tars.config.postprocessors);
+}
 
 if (tars.config.useSVG) {
     scssFilesToConcatinate.push(
@@ -65,9 +74,9 @@ module.exports = function () {
                         return gutil.log(gutil.colors.red(error.message + ' on line ' + error.line + ' in ' + error.file));
                     }
                 }))
-                .pipe(autoprefixer('ie 8', { cascade: true }))
+                .pipe(postcss(processors))
                 .on('error', notify.onError(function (error) {
-                    return '\nAn error occurred while autoprefixing css.\nLook in the console for details.\n' + error;
+                    return '\nAn error occurred while postprocessing css.\nLook in the console for details.\n' + error;
                 }))
                 .pipe(gulp.dest('./dev/' + tars.config.fs.staticFolderName + '/css/'))
                 .pipe(browserSync.reload({ stream: true }))
