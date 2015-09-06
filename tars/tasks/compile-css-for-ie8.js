@@ -69,6 +69,8 @@ module.exports = function () {
                 }))
                 .pipe(sass({
                     errLogToConsole: false,
+                    outputStyle: 'expanded',
+                    indentWidth: 4,
                     onError: function (error) {
                         notify().write('\nAn error occurred while compiling css for ie8.\nLook in the console for details.\n');
                         return gutil.log(gutil.colors.red(error.message + ' on line ' + error.line + ' in ' + error.file));
