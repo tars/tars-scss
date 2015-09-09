@@ -12,7 +12,7 @@ var notify = tars.packages.notify;
 var notifier = tars.helpers.notifier;
 var browserSync = tars.packages.browserSync;
 
-var patterns = [];
+var postcssProcessors = tars.config.postcss;
 var scssFolderPath = './markup/' + tars.config.fs.staticFolderName + '/scss';
 var scssFilesToConcatinate = [
         scssFolderPath + '/normalize.scss',
@@ -21,12 +21,15 @@ var scssFilesToConcatinate = [
         scssFolderPath + '/mixins.scss',
         scssFolderPath + '/sprites-scss/sprite_96.scss'
     ];
+var patterns = [];
 var processors = [
     autoprefixer({browsers: ['ie 8']})
 ];
 
-if (tars.config.postprocessors && tars.config.postprocessors.length) {
-    processors.push(tars.config.postprocessors);
+if (postcssProcessors && postcssProcessors.length) {
+    postcssProcessors.forEach(function (processor) {
+        processors.push(require(processor.name)(processor.options));
+    });
 }
 
 if (tars.config.useSVG) {
