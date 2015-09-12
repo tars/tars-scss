@@ -86,13 +86,13 @@ module.exports = function () {
                 patterns: patterns,
                 usePrefix: false
             }))
-            .pipe(sass({
-                    errLogToConsole: false,
-                    onError: function (error) {
-                        notify().write('\nAn error occurred while compiling css.\nLook in the console for details.\n');
-                        return gutil.log(gutil.colors.red(error.message + ' on line ' + error.line + ' in ' + error.file));
-                    }
-                }))
+            .pipe(sass().on('error',
+                function (error) {
+                    notify().write('\nAn error occurred while compiling css.\nLook in the console for details.\n');
+                    this.emit('end');
+                    return gutil.log(gutil.colors.red(error.message + ' on line ' + error.line + ' in ' + error.file));
+                }
+            ))
             .pipe(postcss(processors))
             .on('error', notify.onError(function (error) {
                 return '\nAn error occurred while postprocessing css.\nLook in the console for details.\n' + error;
@@ -109,13 +109,13 @@ module.exports = function () {
                 patterns: patterns,
                 usePrefix: false
             }))
-            .pipe(sass({
-                errLogToConsole: false,
-                onError: function (error) {
-                    notify().write('\nAn error occurred while compiling css for ie9.\nLook in the console for details.\n');
+            .pipe(sass().on('error',
+                function (error) {
+                    notify().write('\nAn error occurred while compiling css for IE9.\nLook in the console for details.\n');
+                    this.emit('end');
                     return gutil.log(gutil.colors.red(error.message + ' on line ' + error.line + ' in ' + error.file));
                 }
-            }))
+            ))
             .pipe(postcss(processorsIE9))
             .on('error', notify.onError(function (error) {
                 return '\nAn error occurred while postprocessing css.\nLook in the console for details.\n' + error;
@@ -123,7 +123,7 @@ module.exports = function () {
             .pipe(gulp.dest('./dev/' + tars.config.fs.staticFolderName + '/css/'))
             .pipe(browserSync.reload({ stream: true }))
             .pipe(
-                notifier('Css-files for ie9 have been compiled')
+                notifier('Scss-files for ie9 have been compiled')
             );
     });
 };
