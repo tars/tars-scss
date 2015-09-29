@@ -2,6 +2,7 @@
 
 var gulp = tars.packages.gulp;
 var gutil = tars.packages.gutil;
+var gulpif = tars.packages.gulpif;
 var concat = tars.packages.concat;
 var sass = tars.packages.sass;
 var autoprefixer = tars.packages.autoprefixer;
