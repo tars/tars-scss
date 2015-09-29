@@ -25,7 +25,7 @@ var scssFilesToConcatinate = [
     ];
 var patterns = [];
 var processors = [];
-var generateSourceMaps = tars.config.sourcemaps.css && !tars.flags.release;
+var generateSourceMaps = tars.config.sourcemaps.css && !tars.flags.release && !tars.flags.min;
 
 if (postcssProcessors && postcssProcessors.length) {
     postcssProcessors.forEach(function (processor) {
