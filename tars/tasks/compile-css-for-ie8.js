@@ -8,6 +8,7 @@ var autoprefixer = tars.packages.autoprefixer;
 tars.packages.promisePolyfill.polyfill();
 var postcss = tars.packages.postcss;
 var replace = tars.packages.replace;
+var sourcemaps = tars.packages.sourcemaps;
 var notify = tars.packages.notify;
 var notifier = tars.helpers.notifier;
 var browserSync = tars.packages.browserSync;
@@ -22,15 +23,16 @@ var scssFilesToConcatinate = [
         scssFolderPath + '/sprites-scss/sprite_96.scss'
     ];
 var patterns = [];
-var processors = [
-    autoprefixer({browsers: ['ie 8']})
-];
+var processors = [];
+var generateSourceMaps = tars.config.sourcemaps.css && !tars.flags.release;
 
 if (postcssProcessors && postcssProcessors.length) {
     postcssProcessors.forEach(function (processor) {
         processors.push(require(processor.name)(processor.options));
     });
 }
+
+processors.push(autoprefixer({browsers: ['ie 8']}));
 
 if (tars.config.useSVG) {
     scssFilesToConcatinate.push(
@@ -48,7 +50,8 @@ scssFilesToConcatinate.push(
     scssFolderPath + '/plugins/**/*.css',
     './markup/modules/*/*.scss',
     './markup/modules/*/ie/ie8.scss',
-    scssFolderPath + '/etc/**/*.scss'
+    scssFolderPath + '/etc/**/*.scss',
+    '!./**/_*.scss'
 );
 
 patterns.push(
@@ -63,8 +66,9 @@ patterns.push(
  */
 module.exports = function () {
     return gulp.task('css:compile-css-for-ie8', function (cb) {
-        if (tars.flags.ie8) {
-            return gulp.src(scssFilesToConcatinate)
+        if (tars.flags.ie8 || tars.flags.ie) {
+            return gulp.src(scssFilesToConcatinate, { base: process.cwd() })
+                .pipe(gulpif(generateSourceMaps, sourcemaps.init()))
                 .pipe(concat('main_ie8' + tars.options.build.hash + '.css'))
                 .pipe(replace({
                     patterns: patterns,
@@ -81,6 +85,7 @@ module.exports = function () {
                 .on('error', notify.onError(function (error) {
                     return '\nAn error occurred while postprocessing css.\nLook in the console for details.\n' + error;
                 }))
+                .pipe(gulpif(generateSourceMaps, sourcemaps.write()))
                 .pipe(gulp.dest('./dev/' + tars.config.fs.staticFolderName + '/css/'))
                 .pipe(browserSync.reload({ stream: true }))
                 .pipe(
