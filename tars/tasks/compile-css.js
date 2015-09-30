@@ -87,8 +87,6 @@ module.exports = function () {
 
         if (tars.flags.ie9 || tars.flags.ie) {
             ie9Stream
-                .pipe(gulpif(generateSourceMaps, sourcemaps.init()))
-                .pipe(concat({cwd: process.cwd(), path: 'main_ie9' + tars.options.build.hash + '.css'}))
                 .pipe(replace({
                     patterns: patterns,
                     usePrefix: false
@@ -104,21 +102,21 @@ module.exports = function () {
                 .on('error', notify.onError(function (error) {
                     return '\nAn error occurred while postprocessing css.\nLook in the console for details.\n' + error;
                 }))
-                .pipe(gulpif(generateSourceMaps, sourcemaps.write(sourceMapsDest)))
+                .pipe(concat({cwd: process.cwd(), path: 'main_ie9' + tars.options.build.hash + '.css'}))
                 .pipe(gulp.dest('./dev/' + tars.config.fs.staticFolderName + '/css/'))
                 .pipe(browserSync.reload({ stream: true }))
                 .pipe(
-                    notifier('Scss-files for ie9 have been compiled')
+                    notifier('Scss-files for IE9 have been compiled')
                 );
         }
 
         return mainStream
             .pipe(gulpif(generateSourceMaps, sourcemaps.init()))
-            .pipe(concat({cwd: process.cwd(), path: 'main' + tars.options.build.hash + '.css'}))
             .pipe(replace({
                 patterns: patterns,
                 usePrefix: false
             }))
+            .pipe(concat({cwd: process.cwd(), path: 'main' + tars.options.build.hash + '.css'}))
             .pipe(sass().on('error',
                 function (error) {
                     notify().write('\nAn error occurred while compiling css.\nLook in the console for details.\n');
