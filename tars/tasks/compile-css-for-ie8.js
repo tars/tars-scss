@@ -78,12 +78,12 @@ module.exports = function () {
                     usePrefix: false
                 }))
                 .pipe(sass().on('error',
-                function (error) {
-                    notify().write('\nAn error occurred while compiling css for IE8.\nLook in the console for details.\n');
-                    this.emit('end');
-                    return gutil.log(gutil.colors.red(error.message + ' on line ' + error.line + ' in ' + error.file));
-                }
-            ))
+                    function (error) {
+                        notify().write('\nAn error occurred while compiling css for IE8.\nLook in the console for details.\n');
+                        this.emit('end');
+                        return gutil.log(gutil.colors.red(error.message + ' on line ' + error.line + ' in ' + error.file));
+                    }
+                ))
                 .pipe(postcss(processors))
                 .on('error', notify.onError(function (error) {
                     return '\nAn error occurred while postprocessing css.\nLook in the console for details.\n' + error;
