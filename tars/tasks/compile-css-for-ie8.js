@@ -78,7 +78,8 @@ module.exports = function () {
                     usePrefix: false
                 }))
                 .pipe(sass({
-                    outputStyle: 'expanded'
+                    outputStyle: 'expanded',
+                    includePaths: process.cwd()
                 }))
                 .pipe(postcss(processors))
                 .pipe(concat('main_ie8' + tars.options.build.hash + '.css'))
