@@ -81,7 +81,7 @@ module.exports = function () {
                     outputStyle: 'expanded'
                 }))
                 .pipe(postcss(processors))
-                .pipe(concat({cwd: process.cwd(), path: 'main_ie8' + tars.options.build.hash + '.css'}))
+                .pipe(concat('main_ie8' + tars.options.build.hash + '.css'))
                 .pipe(gulp.dest('./dev/' + tars.config.fs.staticFolderName + '/css/'))
                 .pipe(browserSync.reload({ stream: true }))
                 .pipe(
