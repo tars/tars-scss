@@ -15,11 +15,11 @@ var browserSync = tars.packages.browserSync;
 var postcssProcessors = tars.config.postcss;
 var scssFolderPath = './markup/' + tars.config.fs.staticFolderName + '/scss';
 var scssFilesToConcatinate = [
-        scssFolderPath + '/normalize.scss',
-        scssFolderPath + '/libraries/**/*.scss',
+        scssFolderPath + '/normalize.{scss,sass}',
+        scssFolderPath + '/libraries/**/*.{scss,sass}',
         scssFolderPath + '/libraries/**/*.css',
-        scssFolderPath + '/mixins.scss',
-        scssFolderPath + '/sprites-scss/sprite_96.scss'
+        scssFolderPath + '/mixins.{scss,sass}',
+        scssFolderPath + '/sprites-scss/sprite_96.{scss,sass}'
     ];
 var patterns = [];
 var processors = [];
@@ -34,22 +34,22 @@ processors.push(autoprefixer({browsers: ['ie 8']}));
 
 if (tars.config.useSVG) {
     scssFilesToConcatinate.push(
-        scssFolderPath + '/sprites-scss/svg-fallback-sprite.scss'
+        scssFolderPath + '/sprites-scss/svg-fallback-sprite.{scss,sass}'
     );
 }
 
 scssFilesToConcatinate.push(
-    scssFolderPath + '/sprites-scss/sprite-ie.scss',
-    scssFolderPath + '/fonts.scss',
-    scssFolderPath + '/vars.scss',
-    scssFolderPath + '/GUI.scss',
-    scssFolderPath + '/common.scss',
-    scssFolderPath + '/plugins/**/*.scss',
+    scssFolderPath + '/sprites-scss/sprite-ie.{scss,sass}',
+    scssFolderPath + '/fonts.{scss,sass}',
+    scssFolderPath + '/vars.{scss,sass}',
+    scssFolderPath + '/GUI.{scss,sass}',
+    scssFolderPath + '/common.{scss,sass}',
+    scssFolderPath + '/plugins/**/*.{scss,sass}',
     scssFolderPath + '/plugins/**/*.css',
-    './markup/modules/*/*.scss',
-    './markup/modules/*/ie/ie8.scss',
-    scssFolderPath + '/etc/**/*.scss',
-    '!./**/_*.scss',
+    './markup/modules/*/*.{scss,sass}',
+    './markup/modules/*/ie/ie8.{scss,sass}',
+    scssFolderPath + '/etc/**/*.{scss,sass}',
+    '!./**/_*.{scss,sass}',
     '!./**/_*.css'
 );
 

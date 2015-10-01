@@ -39,28 +39,28 @@ if (tars.config.autoprefixerConfig) {
 }
 
 var scssFilesToConcatinate = [
-        scssFolderPath + '/normalize.scss',
-        scssFolderPath + '/libraries/**/*.scss',
+        scssFolderPath + '/normalize.{scss,sass}',
+        scssFolderPath + '/libraries/**/*.{scss,sass}',
         scssFolderPath + '/libraries/**/*.css',
-        scssFolderPath + '/mixins.scss',
-        scssFolderPath + '/sprites-scss/sprite_96.scss'
+        scssFolderPath + '/mixins.{scss,sass}',
+        scssFolderPath + '/sprites-scss/sprite_96.{scss,sass}'
     ];
 
 if (tars.config.useSVG) {
     scssFilesToConcatinate.push(
-        scssFolderPath + '/sprites-scss/svg-sprite.scss'
+        scssFolderPath + '/sprites-scss/svg-sprite.{scss,sass}'
     );
 }
 
 scssFilesToConcatinate.push(
-    scssFolderPath + '/fonts.scss',
-    scssFolderPath + '/vars.scss',
-    scssFolderPath + '/GUI.scss',
-    scssFolderPath + '/common.scss',
-    scssFolderPath + '/plugins/**/*.scss',
+    scssFolderPath + '/fonts.{scss,sass}',
+    scssFolderPath + '/vars.{scss,sass}',
+    scssFolderPath + '/GUI.{scss,sass}',
+    scssFolderPath + '/common.{scss,sass}',
+    scssFolderPath + '/plugins/**/*.{scss,sass}',
     scssFolderPath + '/plugins/**/*.css',
-    './markup/modules/*/*.scss',
-    '!./**/_*.scss',
+    './markup/modules/*/*.{scss,sass}',
+    '!./**/_*.{scss,sass}',
     '!./**/_*.css'
 );
 
@@ -77,11 +77,11 @@ patterns.push(
 module.exports = function () {
     return gulp.task('css:compile-css', function () {
         var helperStream = gulp.src(scssFilesToConcatinate, { base: process.cwd() });
-        var mainStream = helperStream.pipe(addsrc.append(scssFolderPath + '/etc/**/*.scss'));
+        var mainStream = helperStream.pipe(addsrc.append(scssFolderPath + '/etc/**/*.{scss,sass}'));
         var ie9Stream = helperStream.pipe(
                                 addsrc.append([
-                                        './markup/modules/*/ie/ie9.scss',
-                                        scssFolderPath + '/etc/**/*.scss'
+                                        './markup/modules/*/ie/ie9.{scss,sass}',
+                                        scssFolderPath + '/etc/**/*.{scss,sass}'
                                     ])
                             );
 
