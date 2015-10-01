@@ -8,7 +8,7 @@ var autoprefixer = tars.packages.autoprefixer;
 tars.packages.promisePolyfill.polyfill();
 var postcss = tars.packages.postcss;
 var replace = tars.packages.replace;
-var notify = tars.packages.notify;
+var plumber = tars.packages.plumber;
 var notifier = tars.helpers.notifier;
 var browserSync = tars.packages.browserSync;
 
@@ -61,35 +61,34 @@ patterns.push(
 );
 
 /**
- * Scss compilation for ie8
+ * Scss compilation for IE8
  */
 module.exports = function () {
     return gulp.task('css:compile-css-for-ie8', function (cb) {
         if (tars.flags.ie8 || tars.flags.ie) {
             return gulp.src(scssFilesToConcatinate, { base: process.cwd() })
+                .pipe(plumber({
+                    errorHandler: function (error) {
+                        notifier.error('An error occurred while compiling css for IE8.', error);
+                        this.emit('end');
+                    }
+                }))
                 .pipe(replace({
                     patterns: patterns,
                     usePrefix: false
                 }))
-                .pipe(sass().on('error',
-                    function (error) {
-                        notify().write('\nAn error occurred while compiling css for IE8.\nLook in the console for details.\n');
-                        this.emit('end');
-                        return gutil.log(gutil.colors.red(error.message + ' on line ' + error.line + ' in ' + error.file));
-                    }
-                ))
-                .pipe(postcss(processors))
-                .on('error', notify.onError(function (error) {
-                    return '\nAn error occurred while postprocessing css.\nLook in the console for details.\n' + error;
+                .pipe(sass({
+                    outputStyle: 'expanded'
                 }))
+                .pipe(postcss(processors))
                 .pipe(concat({cwd: process.cwd(), path: 'main_ie8' + tars.options.build.hash + '.css'}))
                 .pipe(gulp.dest('./dev/' + tars.config.fs.staticFolderName + '/css/'))
                 .pipe(browserSync.reload({ stream: true }))
                 .pipe(
-                    notifier('Scss-files for IE8 have been compiled')
+                    notifier.success('Scss-files for IE8 have been compiled')
                 );
         } else {
-            gutil.log('!Stylies for ie8 are not used!');
+            gutil.log('!Stylies for IE8 are not used!');
             cb(null);
         }
     });

@@ -3,7 +3,7 @@
 var gulp = tars.packages.gulp;
 var gutil = tars.packages.gutil;
 var spritesmith = tars.packages.spritesmith;
-var notify = tars.packages.notify;
+var plumber = tars.packages.plumber;
 var notifier = tars.helpers.notifier;
 
 var staticFolderName = tars.config.fs.staticFolderName;
@@ -20,6 +20,11 @@ module.exports = function () {
         if (tars.config.useSVG && (tars.flags.ie8 || tars.flags.ie)) {
 
             spriteData = gulp.src('./dev/' + staticFolderName + '/' + imagesFolderName + '/rastered-svg-images/*.png')
+                .pipe(plumber({
+                    errorHandler: function (error) {
+                        notifier.error('An error occurred while making fallback for svg.', error);
+                    }
+                }))
                 .pipe(
                     spritesmith(
                         {
@@ -29,19 +34,16 @@ module.exports = function () {
                             cssTemplate: './markup/' + staticFolderName + '/scss/sprite-generator-templates/scss.svg-fallback-sprite.mustache'
                         }
                     )
-                )
-                .on('error', notify.onError(function (error) {
-                    return '\nAn error occurred while making fallback for svg.\nLook in the console for details.\n' + error;
-                }));
+                );
 
             spriteData.img.pipe(gulp.dest('./dev/' + staticFolderName + '/' + imagesFolderName + '/rastered-svg-sprite/'))
                 .pipe(
-                    notifier('Sprite img for svg is ready')
+                    notifier.success('Sprite-img for svg is ready!')
                 );
 
             return spriteData.css.pipe(gulp.dest('./markup/' + staticFolderName + '/scss/sprites-scss/'))
                     .pipe(
-                        notifier('Scss for svg-sprite is ready')
+                        notifier.success('Scss for svg-sprite is ready')
                     );
 
         } else {

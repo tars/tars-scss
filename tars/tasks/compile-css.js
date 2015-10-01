@@ -11,7 +11,7 @@ var postcss = tars.packages.postcss;
 var addsrc = tars.packages.addsrc;
 var replace = tars.packages.replace;
 var sourcemaps = tars.packages.sourcemaps;
-var notify = tars.packages.notify;
+var plumber = tars.packages.plumber;
 var notifier = tars.helpers.notifier;
 var browserSync = tars.packages.browserSync;
 
@@ -87,52 +87,50 @@ module.exports = function () {
 
         if (tars.flags.ie9 || tars.flags.ie) {
             ie9Stream
+                .pipe(plumber({
+                    errorHandler: function (error) {
+                        notifier.error('An error occurred while compiling css for IE9.', error);
+                        this.emit('end');
+                    }
+                }))
                 .pipe(replace({
                     patterns: patterns,
                     usePrefix: false
                 }))
-                .pipe(sass().on('error',
-                    function (error) {
-                        notify().write('\nAn error occurred while compiling css for IE9.\nLook in the console for details.\n');
-                        this.emit('end');
-                        return gutil.log(gutil.colors.red(error.message + ' on line ' + error.line + ' in ' + error.file));
-                    }
-                ))
-                .pipe(postcss(processorsIE9))
-                .on('error', notify.onError(function (error) {
-                    return '\nAn error occurred while postprocessing css.\nLook in the console for details.\n' + error;
+                .pipe(sass({
+                    outputStyle: 'expanded'
                 }))
+                .pipe(postcss(processorsIE9))
                 .pipe(concat({cwd: process.cwd(), path: 'main_ie9' + tars.options.build.hash + '.css'}))
                 .pipe(gulp.dest('./dev/' + tars.config.fs.staticFolderName + '/css/'))
                 .pipe(browserSync.reload({ stream: true }))
                 .pipe(
-                    notifier('Scss-files for IE9 have been compiled')
+                    notifier.success('Scss-files for IE9 have been compiled')
                 );
         }
 
         return mainStream
             .pipe(gulpif(generateSourceMaps, sourcemaps.init()))
+            .pipe(plumber({
+                errorHandler: function (error) {
+                    notifier.error('An error occurred while compressing css.', error);
+                    this.emit('end');
+                }
+            }))
             .pipe(replace({
                 patterns: patterns,
                 usePrefix: false
             }))
-            .pipe(concat({cwd: process.cwd(), path: 'main' + tars.options.build.hash + '.css'}))
-            .pipe(sass().on('error',
-                function (error) {
-                    notify().write('\nAn error occurred while compiling css.\nLook in the console for details.\n');
-                    this.emit('end');
-                    return gutil.log(gutil.colors.red(error.message + ' on line ' + error.line + ' in ' + error.file));
-                }
-            ))
-            .pipe(postcss(processors))
-            .on('error', notify.onError(function (error) {
-                return '\nAn error occurred while postprocessing css.\nLook in the console for details.\n' + error;
+            .pipe(sass({
+                outputStyle: 'expanded'
             }))
+            .pipe(postcss(processors))
+            .pipe(concat({cwd: process.cwd(), path: 'main' + tars.options.build.hash + '.css'}))
             .pipe(gulpif(generateSourceMaps, sourcemaps.write(sourceMapsDest)))
             .pipe(gulp.dest('./dev/' + tars.config.fs.staticFolderName + '/css/'))
             .pipe(browserSync.reload({ stream: true }))
             .pipe(
-                notifier('Scss-files\'ve been compiled')
+                notifier.success('Scss-files\'ve been compiled')
             );
     });
 };

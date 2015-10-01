@@ -2,7 +2,7 @@
 
 var gulp = tars.packages.gulp;
 var spritesmith = tars.packages.spritesmith;
-var notify = tars.packages.notify;
+var plumber = tars.packages.plumber;
 var notifier = tars.helpers.notifier;
 
 var staticFolderName = tars.config.fs.staticFolderName;
@@ -35,6 +35,11 @@ module.exports = function () {
 
         for (i = 0; i < dpiLength; i++) {
             spriteData.push(gulp.src('./markup/' + staticFolderName + '/' + imagesFolderName + '/sprite/' + dpi[i] + 'dpi/*.png')
+                 .pipe(plumber({
+                    errorHandler: function (error) {
+                        notifier.error('An error occurred while making png-sprite.', error);
+                    }
+                }))
                 .pipe(
                     spritesmith(
                         {
@@ -51,20 +56,17 @@ module.exports = function () {
                         }
                     )
                 )
-                .on('error', notify.onError(function (error) {
-                    return '\nAn error occurred while making png-sprite.\nLook in the console for details.\n' + error;
-                }))
             );
 
             spriteData[i].img.pipe(gulp.dest('./dev/' + staticFolderName + '/' + imagesFolderName + '/png-sprite/' + dpi[i] + 'dpi/'))
                 .pipe(
-                    notifier('Sprite img with dpi = ' + dpi[i] + ' is ready')
+                    notifier.success('Sprite img with dpi = ' + dpi[i] + ' is ready')
                 );
         }
 
         return spriteData[0].css.pipe(gulp.dest('./markup/' + staticFolderName + '/scss/sprites-scss/'))
                 .pipe(
-                    notifier('Scss for sprites is ready')
+                    notifier.success('Scss for sprites is ready')
                 );
     });
 };
