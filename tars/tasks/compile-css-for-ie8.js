@@ -73,6 +73,7 @@ module.exports = function () {
                         this.emit('end');
                     }
                 }))
+                .pipe(concat('main_ie8' + tars.options.build.hash + '.css'))
                 .pipe(replace({
                     patterns: patterns,
                     usePrefix: false
@@ -82,7 +83,6 @@ module.exports = function () {
                     includePaths: process.cwd()
                 }))
                 .pipe(postcss(processors))
-                .pipe(concat('main_ie8' + tars.options.build.hash + '.css'))
                 .pipe(gulp.dest('./dev/' + tars.config.fs.staticFolderName + '/css/'))
                 .pipe(browserSync.reload({ stream: true }))
                 .pipe(
