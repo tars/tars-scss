@@ -8,10 +8,10 @@ var sass = tars.packages.sass;
 var autoprefixer = tars.packages.autoprefixer;
 tars.packages.promisePolyfill.polyfill();
 var postcss = tars.packages.postcss;
-var addsrc = tars.packages.addsrc;
 var replace = tars.packages.replace;
 var sourcemaps = tars.packages.sourcemaps;
 var plumber = tars.packages.plumber;
+var importify = tars.packages.importify;
 var notifier = tars.helpers.notifier;
 var browserSync = tars.packages.browserSync;
 
@@ -45,6 +45,7 @@ var scssFilesToConcatinate = [
         scssFolderPath + '/mixins.{scss,sass}',
         scssFolderPath + '/sprites-scss/sprite_96.{scss,sass}'
     ];
+var scssFilesToConcatinateForIe9;
 
 if (tars.config.useSVG) {
     scssFilesToConcatinate.push(
@@ -64,6 +65,14 @@ scssFilesToConcatinate.push(
     '!./**/_*.css'
 );
 
+scssFilesToConcatinateForIe9 = scssFilesToConcatinate.slice();
+
+scssFilesToConcatinate.push(scssFolderPath + '/etc/**/*.{scss,sass}');
+scssFilesToConcatinateForIe9.push(
+    './markup/modules/*/ie/ie9.{scss,sass}',
+    scssFolderPath + '/etc/**/*.{scss,sass}'
+);
+
 patterns.push(
     {
         match: '%=staticPrefixForCss=%',
@@ -71,19 +80,14 @@ patterns.push(
     }
 );
 
+
 /**
  * Scss compilation
  */
 module.exports = function () {
     return gulp.task('css:compile-css', function () {
-        var helperStream = gulp.src(scssFilesToConcatinate, { base: process.cwd() });
-        var mainStream = helperStream.pipe(addsrc.append(scssFolderPath + '/etc/**/*.{scss,sass}'));
-        var ie9Stream = helperStream.pipe(
-                                addsrc.append([
-                                        './markup/modules/*/ie/ie9.{scss,sass}',
-                                        scssFolderPath + '/etc/**/*.{scss,sass}'
-                                    ])
-                            );
+        var mainStream = gulp.src(scssFilesToConcatinate, { base: process.cwd() });
+        var ie9Stream = gulp.src(scssFilesToConcatinateForIe9, { base: process.cwd() });
 
         if (tars.flags.ie9 || tars.flags.ie) {
             ie9Stream
@@ -93,16 +97,19 @@ module.exports = function () {
                         this.emit('end');
                     }
                 }))
-                .pipe(concat('main_ie9' + tars.options.build.hash + '.css'))
-                .pipe(replace({
-                    patterns: patterns,
-                    usePrefix: false
+                .pipe(importify('main_ie9.scss', {
+                    cssPreproc: 'scss'
                 }))
                 .pipe(sass({
                     outputStyle: 'expanded',
                     includePaths: process.cwd()
                 }))
+                .pipe(replace({
+                    patterns: patterns,
+                    usePrefix: false
+                }))
                 .pipe(postcss(processorsIE9))
+                .pipe(concat('main_ie9' + tars.options.build.hash + '.css'))
                 .pipe(gulp.dest('./dev/' + tars.config.fs.staticFolderName + '/css/'))
                 .pipe(browserSync.reload({ stream: true }))
                 .pipe(
@@ -118,16 +125,19 @@ module.exports = function () {
                     this.emit('end');
                 }
             }))
-            .pipe(concat('main' + tars.options.build.hash + '.css'))
-            .pipe(replace({
-                patterns: patterns,
-                usePrefix: false
+            .pipe(importify('main.scss', {
+                cssPreproc: 'scss'
             }))
             .pipe(sass({
                 outputStyle: 'expanded',
                 includePaths: process.cwd()
             }))
+            .pipe(replace({
+                patterns: patterns,
+                usePrefix: false
+            }))
             .pipe(postcss(processors))
+            .pipe(concat('main' + tars.options.build.hash + '.css'))
             .pipe(gulpif(generateSourceMaps, sourcemaps.write(sourceMapsDest)))
             .pipe(gulp.dest('./dev/' + tars.config.fs.staticFolderName + '/css/'))
             .pipe(browserSync.reload({ stream: true }))

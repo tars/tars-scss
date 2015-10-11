@@ -9,6 +9,7 @@ tars.packages.promisePolyfill.polyfill();
 var postcss = tars.packages.postcss;
 var replace = tars.packages.replace;
 var plumber = tars.packages.plumber;
+var importify = tars.packages.importify;
 var notifier = tars.helpers.notifier;
 var browserSync = tars.packages.browserSync;
 
@@ -60,6 +61,7 @@ patterns.push(
     }
 );
 
+
 /**
  * Scss compilation for IE8
  */
@@ -73,16 +75,19 @@ module.exports = function () {
                         this.emit('end');
                     }
                 }))
-                .pipe(concat('main_ie8' + tars.options.build.hash + '.css'))
-                .pipe(replace({
-                    patterns: patterns,
-                    usePrefix: false
+                .pipe(importify('main_ie8.scss', {
+                    cssPreproc: 'scss'
                 }))
                 .pipe(sass({
                     outputStyle: 'expanded',
                     includePaths: process.cwd()
                 }))
+                .pipe(replace({
+                    patterns: patterns,
+                    usePrefix: false
+                }))
                 .pipe(postcss(processors))
+                .pipe(concat('main_ie8' + tars.options.build.hash + '.css'))
                 .pipe(gulp.dest('./dev/' + tars.config.fs.staticFolderName + '/css/'))
                 .pipe(browserSync.reload({ stream: true }))
                 .pipe(
