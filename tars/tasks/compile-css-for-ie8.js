@@ -17,8 +17,7 @@ var postcssProcessors = tars.config.postcss;
 var scssFolderPath = './markup/' + tars.config.fs.staticFolderName + '/scss';
 var scssFilesToConcatinate = [
         scssFolderPath + '/normalize.{scss,sass}',
-        scssFolderPath + '/libraries/**/*.{scss,sass}',
-        scssFolderPath + '/libraries/**/*.css',
+        scssFolderPath + '/libraries/**/*.{scss,sass,css}',
         scssFolderPath + '/mixins.{scss,sass}',
         scssFolderPath + '/sprites-scss/sprite_96.{scss,sass}'
     ];
@@ -44,14 +43,12 @@ scssFilesToConcatinate.push(
     scssFolderPath + '/fonts.{scss,sass}',
     scssFolderPath + '/vars.{scss,sass}',
     scssFolderPath + '/GUI.{scss,sass}',
-    scssFolderPath + '/common.{scss,sass}',
-    scssFolderPath + '/plugins/**/*.{scss,sass}',
-    scssFolderPath + '/plugins/**/*.css',
+    scssFolderPath + '/common.{scss,sass,css}',
+    scssFolderPath + '/plugins/**/*.{scss,sass,css}',
     './markup/modules/*/*.{scss,sass}',
     './markup/modules/*/ie/ie8.{scss,sass}',
-    scssFolderPath + '/etc/**/*.{scss,sass}',
-    '!./**/_*.{scss,sass}',
-    '!./**/_*.css'
+    scssFolderPath + '/etc/**/*.{scss,sass,css}',
+    '!./**/_*.{scss,sass,css}'
 );
 
 patterns.push(

@@ -40,8 +40,7 @@ if (tars.config.autoprefixerConfig) {
 
 var scssFilesToConcatinate = [
         scssFolderPath + '/normalize.{scss,sass}',
-        scssFolderPath + '/libraries/**/*.{scss,sass}',
-        scssFolderPath + '/libraries/**/*.css',
+        scssFolderPath + '/libraries/**/*.{scss,sass,css}',
         scssFolderPath + '/mixins.{scss,sass}',
         scssFolderPath + '/sprites-scss/sprite_96.{scss,sass}'
     ];
@@ -57,20 +56,18 @@ scssFilesToConcatinate.push(
     scssFolderPath + '/fonts.{scss,sass}',
     scssFolderPath + '/vars.{scss,sass}',
     scssFolderPath + '/GUI.{scss,sass}',
-    scssFolderPath + '/common.{scss,sass}',
-    scssFolderPath + '/plugins/**/*.{scss,sass}',
-    scssFolderPath + '/plugins/**/*.css',
+    scssFolderPath + '/common.{scss,sass,css}',
+    scssFolderPath + '/plugins/**/*.{scss,sass,css}',
     './markup/modules/*/*.{scss,sass}',
-    '!./**/_*.{scss,sass}',
-    '!./**/_*.css'
+    '!./**/_*.{scss,sass,css}'
 );
 
 scssFilesToConcatinateForIe9 = scssFilesToConcatinate.slice();
 
-scssFilesToConcatinate.push(scssFolderPath + '/etc/**/*.{scss,sass}');
+scssFilesToConcatinate.push(scssFolderPath + '/etc/**/*.{scss,sass,css}');
 scssFilesToConcatinateForIe9.push(
     './markup/modules/*/ie/ie9.{scss,sass}',
-    scssFolderPath + '/etc/**/*.{scss,sass}'
+    scssFolderPath + '/etc/**/*.{scss,sass,css}'
 );
 
 patterns.push(
