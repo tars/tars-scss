@@ -9,7 +9,7 @@
 }
 
 @mixin bg-svg($svg-sprite, $repeat: no-repeat) {
-    background-image: url('%=staticPrefixForCss=%svg-sprite/sprite.svg');
+    background-image: url('%=static=%svg-sprite/sprite.svg');
     @include svg-sprite-position($svg-sprite);
     width: nth($svg-sprite, 3);
     height: nth($svg-sprite, 4);

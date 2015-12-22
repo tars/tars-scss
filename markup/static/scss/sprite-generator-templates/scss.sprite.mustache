@@ -16,7 +16,7 @@
 
   @mixin sprite-image($sprite) {
     $sprite-image: nth($sprite, 9);
-    background-image: url(%=staticPrefixForCss=%png-sprite/96dpi/#{$sprite-image});
+    background-image: url(%=static=%png-sprite/96dpi/#{$sprite-image});
   }
 
   @mixin sprite-mixin-template($sprite) {
@@ -36,21 +36,21 @@
     {{#options.dpi192}}
       @media screen and (-webkit-min-device-pixel-ratio: 2), only screen and ( min-resolution: 192dpi), only screen and ( min-resolution: 2dppx), only screen and (min-device-pixel-ratio: 2) {
           $sprite-image: nth($sprite, 9);
-          background-image: url(%=staticPrefixForCss=%png-sprite/192dpi/#{$sprite-image});
+          background-image: url(%=static=%png-sprite/192dpi/#{$sprite-image});
       }
     {{/options.dpi192}}
 
     {{#options.dpi288}}
       @media screen and (-webkit-min-device-pixel-ratio: 3), only screen and ( min-resolution: 288dpi), only screen and ( min-resolution: 3dppx), only screen and (min-device-pixel-ratio: 3) {
           $sprite-image: nth($sprite, 9);
-          background-image: url(%=staticPrefixForCss=%png-sprite/288dpi/#{$sprite-image});
+          background-image: url(%=static=%png-sprite/288dpi/#{$sprite-image});
       }
     {{/options.dpi288}}
 
     {{#options.dpi384}}
       @media screen and (-webkit-min-device-pixel-ratio: 4), only screen and ( min-resolution: 384dpi), only screen and ( min-resolution: 4dppx), only screen and (min-device-pixel-ratio: 4) {
           $sprite-image: nth($sprite, 9);
-          background-image: url(%=staticPrefixForCss=%png-sprite/384dpi/#{$sprite-image});
+          background-image: url(%=static=%png-sprite/384dpi/#{$sprite-image});
       }
     {{/options.dpi384}}
   }

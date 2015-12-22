@@ -16,7 +16,7 @@
 
   @mixin svg-sprite-image($svg-sprite) {
     $svg-sprite-image: nth($svg-sprite, 9);
-    background-image: url(%=staticPrefixForCss=%rastered-svg-sprite/#{$svg-sprite-image});
+    background-image: url(%=static=%rastered-svg-sprite/#{$svg-sprite-image});
   }
 
   @mixin bg-svg($svg-sprite, $repeat: no-repeat) {
