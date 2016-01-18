@@ -2,6 +2,8 @@
   ${{fileName}}: {{x}}{{units}} {{y}}{{units}} {{w}}{{units}} {{h}}{{units}} {{width}}{{units}} {{height}}{{units}} '{{{cssPathSvg}}}' '{{{fileName}}}';
 {{/sprites}}
 
+
+
 @mixin svg-sprite-position($svg-sprite) {
   $svg-sprite-offset-x: nth($svg-sprite, 1);
   $svg-sprite-offset-y: nth($svg-sprite, 2);
@@ -9,10 +11,9 @@
 }
 
 @mixin bg-svg($svg-sprite, $repeat: no-repeat) {
-    background-image: url('%=static=%svg-sprite/sprite.svg');
+    background-image: url('%=static=%svg-sprite/{{imgName}}');
     @include svg-sprite-position($svg-sprite);
     width: nth($svg-sprite, 3);
     height: nth($svg-sprite, 4);
-
     background-repeat: $repeat;
 }
